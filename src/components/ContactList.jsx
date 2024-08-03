@@ -9,14 +9,12 @@ import {
   Modal,
   Dropdown,
   Form,
+  Card,
 } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaSort, FaSortUp, FaSortDown, FaFilter } from "react-icons/fa";
+import { FaSort, FaSortUp, FaSortDown, FaFilter, FaSignOutAlt, FaAddressBook } from "react-icons/fa";
 import "./List.css";
-import { FaSignOutAlt } from "react-icons/fa";
-import { FaAddressBook } from "react-icons/fa";
-// Importing the logout icon
 
 const ContactList = () => {
   const [contacts, setContacts] = useState([]);
@@ -32,16 +30,15 @@ const ContactList = () => {
   const contactsPerPage = 7;
 
   useEffect(() => {
-    // Fetch contacts and groups only once during component mount
     const fetchData = async () => {
       await fetchGroups(); // Fetch groups
       await fetchContacts(); // Fetch contacts
     };
     fetchData();
-  }, []); // Empty dependency array to run only on mount
+  }, []);
 
   useEffect(() => {
-    fetchContacts(); // Fetch contacts based on filtering or sorting changes
+    fetchContacts();
   }, [currentPage, sortField, sortOrder, selectedGroup, searchText]);
 
   const fetchContacts = async () => {
@@ -57,7 +54,6 @@ const ContactList = () => {
         searchText,
       });
 
-      // Dismiss previous toasts
       toast.dismiss(); // Clear all existing toasts
 
       if (data.error) {
@@ -66,7 +62,6 @@ const ContactList = () => {
       } else {
         setContacts(data.contacts);
         setTotalContacts(data.total);
-        // toast.success("Contacts fetched successfully!");
       }
     } catch (error) {
       setError("An error occurred while fetching contacts.");
@@ -76,9 +71,9 @@ const ContactList = () => {
   };
 
   const handleClearFilter = () => {
-    setSelectedGroup(null); // Clear the selected group
-    fetchContacts(); // Fetch contacts without any filter
-    setShowFilterModal(false); // Close the modal
+    setSelectedGroup(null);
+    fetchContacts();
+    setShowFilterModal(false);
   };
 
   const fetchGroups = async () => {
@@ -96,13 +91,10 @@ const ContactList = () => {
   };
 
   const handleDelete = async (id) => {
-    const payload = {
-      id: id,
-    };
+    const payload = { id };
     try {
       const response = await post(`contacts/delete`, payload);
 
-      // Dismiss previous toasts
       toast.dismiss(); // Clear all existing toasts
 
       if (response.error) {
@@ -150,23 +142,24 @@ const ContactList = () => {
       <div className="card list-card">
         <div className="card-header d-flex justify-content-between align-items-center">
           <h2 className="mb-0">Contacts</h2>
-          <div>
-            <Link to="/contact-form" className="btn btn-primary">
-              <FaAddressBook className="me-1" /> Add Contact
-            </Link>
-            <Button variant="info" className="ms-2" onClick={handleShowFilter}>
-              <FaFilter /> Filter by Group
-            </Button>
-            {selectedGroup && (
-              <Button
-                className="ms-2"
-                variant="secondary"
-                onClick={handleClearFilter}
-              >
-                Clear Filter
-              </Button>
-            )}
-          </div>
+          <div className="d-flex flex-column flex-md-row align-items-center mb-3">
+  <Link to="/contact-form" className="btn btn-primary mb-2 mb-md-0">
+    <FaAddressBook className="me-1" /> Add Contact
+  </Link>
+  <Button variant="info" className="mb-2 mb-md-0 ms-md-2" onClick={handleShowFilter}>
+    <FaFilter /> Filter by Group
+  </Button>
+  {selectedGroup && (
+    <Button
+      variant="secondary"
+      className="mb-2 mb-md-0 ms-md-2"
+      onClick={handleClearFilter}
+    >
+      Clear Filter
+    </Button>
+  )}
+</div>
+
         </div>
 
         <div className="card-body">
@@ -179,127 +172,145 @@ const ContactList = () => {
             />
           </Form.Group>
           {error && <div className="alert alert-danger">{error}</div>}
-          <Table striped bordered hover responsive>
-            <thead>
-              <tr>
-                <th>S.No.</th>
-                <th
-                  onClick={() => handleSort("name")}
-                  style={{ cursor: "pointer" }}
-                >
-                  Full Name
-                  {sortField === "name" &&
-                    (sortOrder === "asc" ? (
-                      <FaSortUp style={{ color: "green" }} />
-                    ) : (
-                      <FaSortDown style={{ color: "green" }} />
-                    ))}
-                  {sortField !== "name" && <FaSort style={{ color: "grey" }} />}
-                </th>
-                <th
-                  onClick={() => handleSort("dob")}
-                  style={{ cursor: "pointer" }}
-                >
-                  DOB
-                  {sortField === "dob" &&
-                    (sortOrder === "asc" ? (
-                      <FaSortUp style={{ color: "green" }} />
-                    ) : (
-                      <FaSortDown style={{ color: "green" }} />
-                    ))}
-                  {sortField !== "dob" && <FaSort style={{ color: "grey" }} />}
-                </th>
-                <th>Contact Number</th>
-                <th
-                  onClick={() => handleSort("email")}
-                  style={{ cursor: "pointer" }}
-                >
-                  Email
-                  {sortField === "email" &&
-                    (sortOrder === "asc" ? (
-                      <FaSortUp style={{ color: "green" }} />
-                    ) : (
-                      <FaSortDown style={{ color: "green" }} />
-                    ))}
-                  {sortField !== "email" && (
-                    <FaSort style={{ color: "grey" }} />
-                  )}
-                </th>
-                <th>Website</th>
-                <th
-                  onClick={() => handleSort("group_name")}
-                  style={{ cursor: "pointer" }}
-                >
-                  Group
-                  {sortField === "group_name" &&
-                    (sortOrder === "asc" ? (
-                      <FaSortUp style={{ color: "green" }} />
-                    ) : (
-                      <FaSortDown style={{ color: "green" }} />
-                    ))}
-                  {sortField !== "group_name" && (
-                    <FaSort style={{ color: "grey" }} />
-                  )}
-                </th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {contacts.length > 0 ? (
-                contacts.map((contact, index) => (
-                  <tr key={contact.id}>
-                    <td>{(currentPage - 1) * contactsPerPage + index + 1}</td>
-                    <td>{contact.name || "-"}</td>
-                    <td>{contact.dob || "-"}</td>
-                    <td>{contact.phone || "-"}</td>
-                    <td>{contact.email || "-"}</td>
-                    <td>
+
+          {/* Desktop and larger screens */}
+          <div className="d-none d-md-block">
+            <Table striped bordered hover responsive>
+              <thead>
+                <tr>
+                  <th>S.No.</th>
+                  <th onClick={() => handleSort("name")} style={{ cursor: "pointer" }}>
+                    Full Name
+                    {sortField === "name" &&
+                      (sortOrder === "asc" ? (
+                        <FaSortUp style={{ color: "green" }} />
+                      ) : (
+                        <FaSortDown style={{ color: "green" }} />
+                      ))}
+                    {sortField !== "name" && <FaSort style={{ color: "grey" }} />}
+                  </th>
+                  <th onClick={() => handleSort("dob")} style={{ cursor: "pointer" }}>
+                    DOB
+                    {sortField === "dob" &&
+                      (sortOrder === "asc" ? (
+                        <FaSortUp style={{ color: "green" }} />
+                      ) : (
+                        <FaSortDown style={{ color: "green" }} />
+                      ))}
+                    {sortField !== "dob" && <FaSort style={{ color: "grey" }} />}
+                  </th>
+                  <th>Contact Number</th>
+                  <th onClick={() => handleSort("email")} style={{ cursor: "pointer" }}>
+                    Email
+                    {sortField === "email" &&
+                      (sortOrder === "asc" ? (
+                        <FaSortUp style={{ color: "green" }} />
+                      ) : (
+                        <FaSortDown style={{ color: "green" }} />
+                      ))}
+                    {sortField !== "email" && <FaSort style={{ color: "grey" }} />}
+                  </th>
+                  <th>Website</th>
+                  <th onClick={() => handleSort("group_name")} style={{ cursor: "pointer" }}>
+                    Group
+                    {sortField === "group_name" &&
+                      (sortOrder === "asc" ? (
+                        <FaSortUp style={{ color: "green" }} />
+                      ) : (
+                        <FaSortDown style={{ color: "green" }} />
+                      ))}
+                    {sortField !== "group_name" && <FaSort style={{ color: "grey" }} />}
+                  </th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {contacts.length > 0 ? (
+                  contacts.map((contact, index) => (
+                    <tr key={contact.id}>
+                      <td>{(currentPage - 1) * contactsPerPage + index + 1}</td>
+                      <td>{contact.name || "-"}</td>
+                      <td>{contact.dob || "-"}</td>
+                      <td>{contact.phone || "-"}</td>
+                      <td>{contact.email || "-"}</td>
+                      <td>
+                        {contact.website ? (
+                          <a href={contact.website} target="_blank" rel="noopener noreferrer">
+                            {contact.website}
+                          </a>
+                        ) : (
+                          "-"
+                        )}
+                      </td>
+                      <td>{contact.group_name || "-"}</td>
+                      <td>
+                        <Link to={`/edit/${contact.id}`} className="btn btn-warning btn-sm me-2">
+                          Edit
+                        </Link>
+                        <Button variant="danger" size="sm" onClick={() => handleDelete(contact.id)}>
+                          Delete
+                        </Button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="8" className="text-center text-danger">
+                      No contacts available
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </div>
+
+          {/* Mobile view */}
+          <div className="d-block d-md-none">
+            {contacts.length > 0 ? (
+              contacts.map((contact) => (
+                <Card className="mb-3" key={contact.id}>
+                  <Card.Body>
+                    <Card.Title>{contact.name || "-"}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">Contact Details</Card.Subtitle>
+                    <Card.Text>
+                      <strong>DOB:</strong> {contact.dob || "-"}<br />
+                      <strong>Phone:</strong> {contact.phone || "-"}<br />
+                      <strong>Email:</strong> {contact.email || "-"}<br />
+                      <strong>Website:</strong>{" "}
                       {contact.website ? (
-                        <a
-                          href={contact.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
+                        <a href={contact.website} target="_blank" rel="noopener noreferrer">
                           {contact.website}
                         </a>
                       ) : (
                         "-"
                       )}
-                    </td>
-                    <td>{contact.group_name || "-"}</td>
-                    <td>
-                      <Link
-                        to={`/edit/${contact.id}`}
-                        className="btn btn-warning btn-sm me-2"
-                      >
+                      <br />
+                      <strong>Group:</strong> {contact.group_name || "-"}
+                    </Card.Text>
+                    <div className="d-flex justify-content-end">
+                      <Link to={`/edit/${contact.id}`} className="btn btn-warning btn-sm me-2">
                         Edit
                       </Link>
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        onClick={() => handleDelete(contact.id)}
-                      >
+                      <Button variant="danger" size="sm" onClick={() => handleDelete(contact.id)}>
                         Delete
                       </Button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="8" className="text-center text-danger">
-                    No contacts available
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </Table>
+                    </div>
+                  </Card.Body>
+                </Card>
+              ))
+            ) : (
+              <div className="text-center text-danger">
+                No contacts available
+              </div>
+            )}
+          </div>
         </div>
+
         <div className="d-flex justify-content-between align-items-center me-2">
           <Button variant="danger">
             <FaSignOutAlt className="me-1" />
-            <a href="/">
-              {" "}
-              <span className="text-white">Logout</span>
+            <a href="/" className="text-white">
+              Logout
             </a>
           </Button>
           <Pagination>
@@ -322,6 +333,7 @@ const ContactList = () => {
             />
           </Pagination>
         </div>
+
         <Modal show={showFilterModal} onHide={() => setShowFilterModal(false)}>
           <Modal.Header closeButton>
             <Modal.Title>Select Group to Filter Contacts</Modal.Title>
@@ -344,14 +356,12 @@ const ContactList = () => {
             </Dropdown>
           </Modal.Body>
           <Modal.Footer>
-            <Button
-              variant="secondary"
-              onClick={() => setShowFilterModal(false)}
-            >
+            <Button variant="secondary" onClick={() => setShowFilterModal(false)}>
               Close
             </Button>
           </Modal.Footer>
         </Modal>
+
         <ToastContainer
           position="top-right"
           autoClose={1000}

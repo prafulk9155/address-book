@@ -69,10 +69,12 @@ button:focus-visible {
 }
 
 
-body{
+body {
   background: linear-gradient(#3E5151, #DECBA4);
+  background-attachment: fixed; /* Keeps the background fixed while scrolling */
+  background-size: cover; /* Ensure the background covers the entire viewport */
+  background-position: center; /* Center the background */
 }
-
 .required:after {
   content:" *";
   color: red;
