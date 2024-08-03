@@ -1,0 +1,22 @@
+.label {
+    font-size: 1rem; /* Normal font size */
+    color: #333; /* Deeper color for better visibility */
+    font-weight: bold; /* Make the labels bold */
+}
+
+.formcontrol {
+    border: 1px solid #007bff; /* Deep blue for input borders */
+    border-radius: .25rem; /* Consistent border radius */
+    background-color: #f8f9fa; /* Light background for better contrast */
+}
+
+/* Optional: Style for focus state */
+.formcontrol:focus {
+    border-color: #0056b3; /* Darker blue when focused */
+    box-shadow: 0 0 5px rgba(0, 123, 255, .25); /* Blue shadow */
+}
+
+.form-card{
+    /* background-image: url('./src/assets/images/form-bg.png'); Adjust path based on where the CSS is located */
+background-color: #c5c4c4;
+}

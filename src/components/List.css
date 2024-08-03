@@ -1,0 +1,13 @@
+.list-card{
+    /* background-image: url('./src/assets/images/form-bg.png'); Adjust path based on where the CSS is located */
+    background-size: cover;
+    background-color: #c5c4c4;
+  
+}
+
+@media (min-width: 1400px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: 1320px;
+        min-width: 1320px;
+    }
+}
