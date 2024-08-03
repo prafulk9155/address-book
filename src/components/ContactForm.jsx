@@ -119,6 +119,7 @@ const ContactForm = () => {
                                         required
                                         max={today}
                                         className="formcontrol"
+                                        onFocus={(e) => e.target.showPicker()}
                                     />
                                 </Form.Group>
                             </Col>
@@ -175,7 +176,7 @@ const ContactForm = () => {
                                         value={contact.group}
                                         onChange={handleChange}
                                         className="formcontrol"
-                                        placeholder="friend, family, office ..."
+                                        placeholder="friend, family, office , other..."
                                     />
                                 </Form.Group>
                             </Col>
@@ -184,7 +185,7 @@ const ContactForm = () => {
                             <Col xs={12} sm={6} className="d-flex justify-content-start">
                                 <Button 
                                     variant="secondary" 
-                                    className="mt-3 w-100" 
+                                    className="mt-3" 
                                     onClick={handleBack}
                                 >
                                     <FaArrowLeft />
@@ -195,7 +196,7 @@ const ContactForm = () => {
                                 <Button 
                                     variant="primary" 
                                     type="submit" 
-                                    className="mt-3 w-100"
+                                    className="mt-3"
                                 >
                                     {id ? 'Update' : 'Add'}
                                 </Button>
