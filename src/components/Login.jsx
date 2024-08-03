@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Button, Form, Container, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { post } from '../services/api.service'; // Ensure this is the correct path
+import { post } from '../services/api.service'; 
 import authService from '../services/authService';
 import { useNavigate } from 'react-router-dom';
-import './Login.css'; // Import custom CSS for additional styling if needed
-import { FaSignInAlt } from 'react-icons/fa'; // Import the sign-in icon
+import './Login.css'; 
+import { FaSignInAlt } from 'react-icons/fa'; 
 import { ToastContainer, toast } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css'; 
 
@@ -13,12 +13,12 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [responseMessage, setResponseMessage] = useState('');
-    const [isLoading, setIsLoading] = useState(false); // For loading indicator
+    const [isLoading, setIsLoading] = useState(false); 
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsLoading(true); // Set loading state
+        setIsLoading(true); 
 
         try {
             const data = await post('users/login', {
@@ -26,7 +26,7 @@ const Login = () => {
                 password: password
             });
 
-            // Clear loading state
+           
             setIsLoading(false); 
 
             if (data.error) {
@@ -39,13 +39,13 @@ const Login = () => {
                 authService.setUserId(data.userId); 
      
 
-                navigate('/contact-list'); // Redirect to dashboard
+                navigate('/contact-list'); 
             }
         } catch (error) {
             console.error("Error during POST request:", error);
             setResponseMessage("Invalid User ID or Password");
             toast.error("Invalid User ID or Password")
-            setIsLoading(false); // Clear loading state on error
+            setIsLoading(false); 
         }
     };
 
@@ -82,7 +82,7 @@ const Login = () => {
                     )}
 
                     <Button variant="primary" type="submit" className="w-100 mt-2" disabled={isLoading}>
-                           <FaSignInAlt className="me-1" /> {/* Logout icon with margin end */}
+                           <FaSignInAlt className="me-1" /> 
                     {isLoading ? 'Loading...' : 'Login'}
                     </Button>
                 </Form>

@@ -5,7 +5,7 @@ import ContactForm from '../components/ContactForm';
 import ContactList from '../components/ContactList';
 import Signup from '../components/Signup';
 
-// Import other components as necessary
+
 
 const AppRoutes = () => {
     return (
@@ -16,7 +16,7 @@ const AppRoutes = () => {
                 <Route path="/contact-form" element={<ContactForm />} />
                 <Route path="/edit/:id" element={<ContactForm />} />
                 <Route path="/register" element={<Signup />} />
-                {/* Define other routes here */}
+               
             </Routes>
         </Router>
     );

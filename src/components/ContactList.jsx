@@ -31,8 +31,8 @@ const ContactList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetchGroups(); // Fetch groups
-      await fetchContacts(); // Fetch contacts
+      await fetchGroups(); 
+      await fetchContacts(); 
     };
     fetchData();
   }, []);
@@ -54,7 +54,7 @@ const ContactList = () => {
         searchText,
       });
 
-      toast.dismiss(); // Clear all existing toasts
+      toast.dismiss(); 
 
       if (data.error) {
         setError(data.message);
@@ -95,7 +95,7 @@ const ContactList = () => {
     try {
       const response = await post(`contacts/delete`, payload);
 
-      toast.dismiss(); // Clear all existing toasts
+      toast.dismiss(); 
 
       if (response.error) {
         console.error(response.message);

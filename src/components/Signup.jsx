@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Button, Form, Container, Card } from 'react-bootstrap';
-import { post } from '../services/api.service';  // Path to your API service
-import authService from '../services/authService'; // Path to your auth service
+import { post } from '../services/api.service';  
+import authService from '../services/authService'; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom'; 
 import './Login.css'
-import { FaUserPlus } from 'react-icons/fa'; // Import the user plus icon
+import { FaUserPlus } from 'react-icons/fa'; 
 
 
 const Signup = () => {
@@ -18,7 +18,7 @@ const Signup = () => {
     });
 
     const [isLoading, setIsLoading] = useState(false);
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate(); 
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -27,32 +27,32 @@ const Signup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsLoading(true); // Set loading state
+        setIsLoading(true); 
 
-        // Check if passwords match
+        
         if (formData.password !== formData.confirm_password) {
-            toast.error("Passwords do not match. Please check and try again."); // Toast notification for password mismatch
+            toast.error("Passwords do not match. Please check and try again."); 
             setIsLoading(false);
             return; 
         }
 
         try {
-            const data = await post('users/register', formData); // Ensure proper payload structure
-            toast.dismiss(); // Clear previous toasts
+            const data = await post('users/register', formData); 
+            toast.dismiss(); 
 
             if (data.error) {
-                toast.error(data.message || "Registration failed. Please try again."); // Display the error returned from the API
+                toast.error(data.message || "Registration failed. Please try again."); 
             } else {
              
-                toast.success('Account created  successfully, please login '); // Notify successful registration
-                navigate('/'); // Redirect to the dashboard or another page after successful registration
+                toast.success('Account created  successfully, please login '); 
+                navigate('/'); 
             }
         } catch (error) {
             console.error("Error during POST request:", error);
             const apiMessage = error.response?.data?.message || "An error occurred during signup. Please try again.";
-            toast.error(apiMessage); // Display error message from the API response
+            toast.error(apiMessage); 
         } finally {
-            setIsLoading(false); // Clear loading state
+            setIsLoading(false); 
         }
     };
 
@@ -104,7 +104,7 @@ const Signup = () => {
                         <Form.Label className='label'>Confirm Password</Form.Label>
                         <Form.Control 
                             type="password" 
-                            name="confirm_password"  // Correct the name attribute
+                            name="confirm_password"  
                             placeholder="Confirm Password" 
                             value={formData.confirm_password} 
                             onChange={handleChange} 
@@ -113,7 +113,7 @@ const Signup = () => {
                     </Form.Group>
 
                     <Button variant="primary" type="submit" className="w-100 mt-2" disabled={isLoading}>
-                    <FaUserPlus className="me-1" /> {/* Logout icon with margin end */}
+                    <FaUserPlus className="me-1" /> 
                     {isLoading ? 'Loading...' : 'Sign Up'}
                     </Button>
                     

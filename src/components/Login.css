@@ -1,31 +1,29 @@
-/* Login.css */
 .login-card{
    background-color: #c5c4c4;
-    /* background-image: url('./src/assets/images/form-bg.png') !important; Adjust path based on where the CSS is located */
 }
 
 html, body {
-    background-color: #f8f9fa; /* Light background color for the entire layout */
+    background-color: #f8f9fa;
 }
 
 .card {
-    border: none; /* Remove default border for a cleaner look */
+    border: none; 
 }
 
 
 
 .text-danger {
-    font-weight: bold; /* Enhance message visibility */
+    font-weight: bold; 
 }
 
 .text-center a {
-    color: #002753; /* Bootstrap primary color for links */
+    color: #002753; 
 }
 
 
 .label {
-    font-size: 1rem; /* Normal font size */
-    color: #333; /* Deeper color for better visibility */
-    font-weight: bold; /* Make the labels bold */
+    font-size: 1rem; 
+    color: #333; 
+    font-weight: bold; 
 }
 

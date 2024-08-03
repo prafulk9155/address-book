@@ -2,7 +2,7 @@
 const BASE_URL = "https://adbms.ogesone.com/api/";
 
 
-// Function to handle HTTP GET requests
+
 export const get = async (endpoint) => {
   try {
     const response = await fetch(`${BASE_URL}${endpoint}`);
@@ -27,7 +27,7 @@ export const post = async (endpoint, body) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ data: body }), // Send the body directly
+      body: JSON.stringify({ data: body }), 
     });
 
     // Handle non-2xx response errors
@@ -42,6 +42,6 @@ export const post = async (endpoint, body) => {
     console.error("Error during POST request:", error);
     const data = await response.json();
     return data;
-    throw error; // Rethrow the error for further handling
+    throw error; 
   }
 };
